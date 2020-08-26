@@ -7,7 +7,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ddo/pick-json"
 	"github.com/ddo/rq"
 	"github.com/ddo/rq/client"
 	"gopkg.in/ddo/go-dlog.v2"
@@ -42,7 +41,7 @@ type Fast struct {
 }
 
 // New creates empty Fast instance with a http client
-func New() *Fast {
+func New(proxy string) *Fast {
 	// default client
 	defaultRq := rq.Get(endpoint)
 	defaultRq.Set("User-Agent", userAgent)
@@ -50,6 +49,7 @@ func New() *Fast {
 	return &Fast{
 		client: client.New(&client.Option{
 			DefaultRq: defaultRq,
+			Proxy:     proxy,
 		}),
 	}
 }
