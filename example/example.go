@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	"github.com/ddo/go-fast"
+	"github.com/nknorg/go-fast"
 )
 
 func main() {
-	fastCom := fast.New()
+	fastCom := fast.New("")
 
 	// init
 	err := fastCom.Init()

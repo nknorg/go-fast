@@ -7,6 +7,7 @@ import (
 	"sync"
 	"time"
 
+	pickjson "github.com/ddo/pick-json"
 	"github.com/ddo/rq"
 	"github.com/ddo/rq/client"
 	"gopkg.in/ddo/go-dlog.v2"
