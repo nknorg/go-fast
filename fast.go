@@ -3,6 +3,9 @@ package fast
 import (
 	"errors"
 	"io"
+	"net"
+	"net/http"
+	"net/url"
 	"strconv"
 	"sync"
 	"time"
@@ -42,17 +45,33 @@ type Fast struct {
 }
 
 // New creates empty Fast instance with a http client
-func New(proxy string) *Fast {
+func New(proxy string) (*Fast, error) {
 	// default client
 	defaultRq := rq.Get(endpoint)
 	defaultRq.Set("User-Agent", userAgent)
 
+	u, err := url.Parse(proxy)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Fast{
 		client: client.New(&client.Option{
 			DefaultRq: defaultRq,
-			Proxy:     proxy,
+			Transport: &http.Transport{
+				DialContext: (&net.Dialer{
+					Timeout:   30 * time.Second,
+					KeepAlive: 30 * time.Second,
+					DualStack: true,
+				}).DialContext,
+				MaxIdleConns:          100,
+				IdleConnTimeout:       90 * time.Second,
+				TLSHandshakeTimeout:   10 * time.Second,
+				ExpectContinueTimeout: 1 * time.Second,
+				Proxy:                 http.ProxyURL(u),
+			},
 		}),
-	}
+	}, nil
 }
 
 // Init inits token and url

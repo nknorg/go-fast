@@ -7,18 +7,19 @@ import (
 )
 
 func main() {
-	fastCom := fast.New("")
+	fastCom, err := fast.New("")
+	if err != nil {
+		panic(err)
+	}
 
 	// init
-	err := fastCom.Init()
-
+	err = fastCom.Init()
 	if err != nil {
 		panic(err)
 	}
 
 	// get urls
 	urls, err := fastCom.GetUrls()
-
 	if err != nil {
 		panic(err)
 	}
@@ -35,7 +36,6 @@ func main() {
 	}()
 
 	err = fastCom.Measure(urls, KbpsChan)
-
 	if err != nil {
 		panic(err)
 	}

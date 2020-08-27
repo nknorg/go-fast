@@ -12,7 +12,11 @@ var f *Fast
 var testing_urls []string
 
 func TestNew(t *testing.T) {
-	f = New("")
+	f, err := New("")
+	if err != nil {
+		t.Error()
+		return
+	}
 
 	if f.client == nil {
 		t.Error()
